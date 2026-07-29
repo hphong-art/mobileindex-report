@@ -113,7 +113,7 @@
       <div class="insight-item">
         <div class="insight-num">3</div>
         <div class="insight-text">
-          <strong>투루카→쏘카 교차율 42.0%(추정)로 상승 흐름 지속, 쏘카→투루카는 3.4%(추정)로 재차 하락 추정.</strong><br>이번 주 투루카 사용자 중 쏘카를 함께 사용하는 비율은 42.0%(전주 41.8%)로 완만한 상승 흐름을 이어간 것으로 추정됩니다. 반대로 쏘카 사용자 중 투루카를 함께 쓰는 비율은 3.4%(전주 3.5%)로 하락 흐름이 이어진 것으로 추정되며 비대칭 구조가 지속되고 있고, Gcar 사용자 중 투루카 병행률도 9.3%(전주 9.5%)로 완만히 하락해 투루카의 잠재 신규유입 풀이 여전히 좁은 상태로 판단됩니다.
+          <strong>투루카→쏘카 교차율 38.38%(실측)로 전주 대비 하락 전환, Gcar→쏘카도 42.22%→40.43%로 동반 하락.</strong><br>이번 주 투루카 사용자 중 쏘카를 함께 사용하는 비율은 38.38%(전주 39.64%)로 실측 기준 하락했습니다. Gcar 사용자 중 쏘카 병행률도 40.43%(전주 42.22%)로 같은 방향으로 낮아져, 대형 경쟁사인 쏘카로의 교차 이용이 3사 전반에서 다소 완화되는 흐름입니다. 쏘카 사용자 중 투루카 병행률은 3.49%(전주 3.23%)로 실측 기준 소폭 상승했으나 절대 수준은 여전히 낮아 비대칭 구조는 유지되고 있습니다. 다만 5/4주~7/6주 구간은 쏘카 기준 상위 100개 목록에 투루카가 포함되지 않아 실측치 확보가 불가했던 데이터 공백 구간이며, 7/13주부터 실측치가 확인됩니다.
         </div>
       </div>
       <div class="insight-item">
@@ -197,28 +197,28 @@
   <div class="section" id="sec-overlap">
     <h2>🔀 카셰어링 앱 교차 사용 분석</h2>
     <p style="font-size:13px;color:#6b7280;margin-bottom:16px;">카셰어링 3개 앱 간 양방향 교차 사용률 (7월 3주, AOS+iOS 합산)</p>
-    <div style="background:#f0fdf4;border:1px solid #86efac;border-radius:8px;padding:11px 15px;font-size:13px;color:#166534;margin-bottom:18px;">ℹ️ 이번 주(7/20주) 교차율은 전주 실측치 기반 추이 연장 추정치입니다.</div>
+    <div style="background:#f0fdf4;border:1px solid #86efac;border-radius:8px;padding:11px 15px;font-size:13px;color:#166534;margin-bottom:18px;">✅ 교차율은 모바일인덱스 usage_overlap_rank API 실측값입니다(AOS+iOS 합산). 단, 쏘카→투루카는 쏘카 기준 상위 100개 앱 목록에 투루카가 5/4주~7/6주 구간 포함되지 않아 해당 10개 주는 데이터 공백(결측)이며, 7/13주부터 실측치가 확인됩니다.</div>
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px;">
       <div id="cardOvT" onclick="toggleOverlapApp('T')" style="background:#fff8f8;border-radius:8px;padding:14px;border-left:3px solid #DC2626;cursor:pointer;box-shadow:0 0 0 2px #DC2626;">
         <div style="font-size:11px;font-weight:700;color:#DC2626;margin-bottom:8px;">투루카 사용자 중</div>
-        <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="font-size:12px;">쏘카도 사용</span><span style="font-size:16px;font-weight:700;color:#5E6AD2;">42.0%</span></div>
-        <div style="background:#e0e1f5;border-radius:4px;height:6px;margin-bottom:10px;"><div style="background:#5E6AD2;width:42.0%;height:100%;border-radius:4px;"></div></div>
-        <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="font-size:12px;">Gcar도 사용</span><span style="font-size:16px;font-weight:700;color:#A8A29E;">30.0%</span></div>
-        <div style="background:#e7e5e4;border-radius:4px;height:6px;"><div style="background:#A8A29E;width:30.0%;height:100%;border-radius:4px;"></div></div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="font-size:12px;">쏘카도 사용</span><span style="font-size:16px;font-weight:700;color:#5E6AD2;">38.38%</span></div>
+        <div style="background:#e0e1f5;border-radius:4px;height:6px;margin-bottom:10px;"><div style="background:#5E6AD2;width:38.38%;height:100%;border-radius:4px;"></div></div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="font-size:12px;">Gcar도 사용</span><span style="font-size:16px;font-weight:700;color:#A8A29E;">29.45%</span></div>
+        <div style="background:#e7e5e4;border-radius:4px;height:6px;"><div style="background:#A8A29E;width:29.45%;height:100%;border-radius:4px;"></div></div>
       </div>
       <div id="cardOvS" onclick="toggleOverlapApp('S')" style="background:#eff0fb;border-radius:8px;padding:14px;border-left:3px solid #5E6AD2;cursor:pointer;">
         <div style="font-size:11px;font-weight:700;color:#5E6AD2;margin-bottom:8px;">쏘카 사용자 중</div>
-        <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="font-size:12px;">투루카도 사용</span><span style="font-size:16px;font-weight:700;color:#DC2626;">3.4%</span></div>
-        <div style="background:#fde8e8;border-radius:4px;height:6px;margin-bottom:10px;"><div style="background:#DC2626;width:3.4%;height:100%;border-radius:4px;"></div></div>
-        <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="font-size:12px;">Gcar도 사용</span><span style="font-size:16px;font-weight:700;color:#A8A29E;">10.9%</span></div>
-        <div style="background:#e7e5e4;border-radius:4px;height:6px;"><div style="background:#A8A29E;width:10.9%;height:100%;border-radius:4px;"></div></div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="font-size:12px;">투루카도 사용</span><span style="font-size:16px;font-weight:700;color:#DC2626;">3.49%</span></div>
+        <div style="background:#fde8e8;border-radius:4px;height:6px;margin-bottom:10px;"><div style="background:#DC2626;width:3.49%;height:100%;border-radius:4px;"></div></div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="font-size:12px;">Gcar도 사용</span><span style="font-size:16px;font-weight:700;color:#A8A29E;">12.23%</span></div>
+        <div style="background:#e7e5e4;border-radius:4px;height:6px;"><div style="background:#A8A29E;width:12.23%;height:100%;border-radius:4px;"></div></div>
       </div>
       <div id="cardOvG" onclick="toggleOverlapApp('G')" style="background:#f5f5f4;border-radius:8px;padding:14px;border-left:3px solid #A8A29E;cursor:pointer;">
         <div style="font-size:11px;font-weight:700;color:#78716c;margin-bottom:8px;">Gcar 사용자 중</div>
-        <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="font-size:12px;">투루카도 사용</span><span style="font-size:16px;font-weight:700;color:#DC2626;">9.3%</span></div>
-        <div style="background:#fde8e8;border-radius:4px;height:6px;margin-bottom:10px;"><div style="background:#DC2626;width:9.3%;height:100%;border-radius:4px;"></div></div>
-        <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="font-size:12px;">쏘카도 사용</span><span style="font-size:16px;font-weight:700;color:#5E6AD2;">41.6%</span></div>
-        <div style="background:#e0e1f5;border-radius:4px;height:6px;"><div style="background:#5E6AD2;width:41.6%;height:100%;border-radius:4px;"></div></div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="font-size:12px;">투루카도 사용</span><span style="font-size:16px;font-weight:700;color:#DC2626;">11.53%</span></div>
+        <div style="background:#fde8e8;border-radius:4px;height:6px;margin-bottom:10px;"><div style="background:#DC2626;width:11.53%;height:100%;border-radius:4px;"></div></div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="font-size:12px;">쏘카도 사용</span><span style="font-size:16px;font-weight:700;color:#5E6AD2;">40.43%</span></div>
+        <div style="background:#e0e1f5;border-radius:4px;height:6px;"><div style="background:#5E6AD2;width:40.43%;height:100%;border-radius:4px;"></div></div>
       </div>
     </div>
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:8px;">
@@ -229,7 +229,7 @@
         <button id="btnOvG" onclick="toggleOverlapApp('G')" style="padding:5px 14px;font-size:12px;font-weight:700;border:none;background:#fff;color:#6b7280;cursor:pointer;">Gcar</button>
       </div>
     </div>
-    <p style="font-size:12px;color:#6b7280;margin-bottom:12px;">실선 = 2026년 · 점선 = 2025년 YoY(추정) · ※ 이번 주 전 항목은 전주 추이 연장 추정치</p>
+    <p style="font-size:12px;color:#6b7280;margin-bottom:12px;">실선 = 2026년(실측, 쏘카→투루카는 7/13주부터 실측 확인) · 점선 = 2025년 YoY(추정)</p>
     <div class="chart-wrap h260"><canvas id="overlapTrend12wChart"></canvas></div>
     <p class="section-note" style="margin-top:10px;">※ 카드 또는 버튼 클릭으로 기준 앱 전환. 교차율은 AOS+iOS 합산 기준. 2025년 YoY 라인은 전주 대비 증감률을 적용한 추정치입니다.</p>
   </div>
@@ -404,19 +404,19 @@ function toggleAgeView(mode){
 /* ── 교차사용 ── */
 const OVL=['5/4','5/11','5/18','5/25','6/1','6/8','6/15','6/22','6/29','7/6','7/13','7/20'];
 const ovData={
-  T:{title:'📈 투루카 기준 교차율 추이 (12주)',yMin:20,yMax:50,ds:[
-    {l:'쏘카 교차율(2026)',d:[37.03,37.66,37.93,36.09,36.28,38.05,38.73,38.72,41.75,41.5,41.8,42.0],c:C_S,fill:true},
-    {l:'Gcar 교차율(2026)',d:[28.78,27.84,29.03,29.39,28.9,27.94,28.57,30.72,29.88,29.6,29.8,30.0],c:C_G,fill:true},
+  T:{title:'📈 투루카 기준 교차율 추이 (12주, 실측)',yMin:20,yMax:50,ds:[
+    {l:'쏘카 교차율(2026)',d:[37.03,37.66,37.93,36.09,36.28,38.05,38.73,38.72,41.75,41.49,39.64,38.38],c:C_S,fill:true},
+    {l:'Gcar 교차율(2026)',d:[28.78,27.84,29.03,29.39,28.9,27.94,28.57,30.72,29.88,31.81,29.48,29.45],c:C_G,fill:true},
     {l:'쏘카(2025 YoY)',   d:[38.64,32.99,33.40,34.36,36.70,32.78,33.0,34.0,36.7,37.0,37.2,37.4],c:C_S,yoy:true},
     {l:'Gcar(2025 YoY)',   d:[29.09,25.60,24.48,25.60,28.57,25.41,25.0,26.0,25.3,25.5,25.7,25.9],c:C_G,yoy:true}]},
-  S:{title:'📈 쏘카 기준 교차율 추이 (12주)',yMin:0,yMax:20,ds:[
-    {l:'투루카 교차율(2026)',d:[4.6,4.3,4.5,4.2,4.1,4.4,4.5,4.6,3.7,3.6,3.5,3.4],c:C_T,fill:true},
-    {l:'Gcar 교차율(2026)',  d:[10.9,11.0,11.3,10.7,10.5,10.9,11.2,11.3,11.0,11.1,11.0,10.9],c:C_G,fill:true},
+  S:{title:'📈 쏘카 기준 교차율 추이 (12주, 실측 · 투루카 교차율은 7/13주부터 실측 확인)',yMin:0,yMax:20,ds:[
+    {l:'투루카 교차율(2026)',d:[null,null,null,null,null,null,null,null,null,null,3.23,3.49],c:C_T,fill:true},
+    {l:'Gcar 교차율(2026)',  d:[11.22,11.26,11.42,10.75,11.87,10.86,11.2,11.01,10.96,11.46,12.08,12.23],c:C_G,fill:true},
     {l:'투루카(2025 YoY)',   d:[4.8,4.6,4.4,4.5,4.3,4.2,4.1,4.0,3.2,3.1,3.0,2.9],c:C_T,yoy:true},
     {l:'Gcar(2025 YoY)',     d:[11.3,11.0,10.8,10.9,10.7,10.6,10.5,10.5,10.2,10.1,10.0,9.9],c:C_G,yoy:true}]},
-  G:{title:'📈 Gcar 기준 교차율 추이 (12주)',yMin:5,yMax:50,ds:[
-    {l:'투루카 교차율(2026)',d:[11.7,11.9,12.0,11.6,11.3,11.8,11.25,11.5,9.9,9.7,9.5,9.3],c:C_T,fill:true},
-    {l:'쏘카 교차율(2026)',  d:[39.7,40.2,40.5,39.8,39.2,39.9,38.31,38.5,40.9,41.0,41.3,41.6],c:C_S,fill:true},
+  G:{title:'📈 Gcar 기준 교차율 추이 (12주, 실측)',yMin:5,yMax:50,ds:[
+    {l:'투루카 교차율(2026)',d:[12.23,12.21,12.45,12.46,12.01,11.79,11.25,10.86,9.86,10.94,11.31,11.53],c:C_T,fill:true},
+    {l:'쏘카 교차율(2026)',  d:[40.23,40.54,40.66,38.66,38.37,39.85,38.31,37.49,40.9,42.08,42.22,40.43],c:C_S,fill:true},
     {l:'투루카(2025 YoY)',   d:[12.2,11.8,11.7,11.9,11.5,11.3,11.2,11.0,9.4,9.2,9.0,8.8],c:C_T,yoy:true},
     {l:'쏘카(2025 YoY)',     d:[41.7,40.8,40.1,40.5,39.8,39.4,39.4,39.5,42.0,42.3,42.5,42.7],c:C_S,yoy:true}]}
 };
