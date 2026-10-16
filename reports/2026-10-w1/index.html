@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>경쟁앱 주간 보고서 - 카셰어링 (2026년 10월 1주)</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Apple SD Gothic Neo', sans-serif; background: #f8f9fa; color: #1a1a1a; line-height: 1.6; }
+    .container { max-width: 1020px; margin: 0 auto; padding: 40px 24px; }
+    .header { text-align: center; margin-bottom: 48px; }
+    .header h1 { font-size: 26px; font-weight: 800; color: #1a1a1a; margin-bottom: 8px; }
+    .header .subtitle { font-size: 15px; color: #6b7280; }
+    .header .period { display: inline-block; background: #DC2626; color: #fff; padding: 4px 14px; border-radius: 20px; font-size: 13px; font-weight: 600; margin-top: 12px; }
+    .our-badge { display: inline-block; background: #fff0f0; color: #DC2626; border: 1px solid #DC2626; padding: 2px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; margin-left: 6px; vertical-align: middle; }
+    .summary-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 32px; }
+    .summary-card { background: #fff; border-radius: 12px; padding: 24px 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); border-top: 4px solid #e5e7eb; }
+    .summary-card.turuka { border-top-color: #DC2626; }
+    .summary-card.socar  { border-top-color: #5E6AD2; }
+    .summary-card.gcar   { border-top-color: #A8A29E; }
+    .app-label { font-size: 12px; font-weight: 700; letter-spacing: 0.05em; color: #9ca3af; text-transform: uppercase; margin-bottom: 4px; }
+    .app-name  { font-size: 16px; font-weight: 700; color: #1a1a1a; margin-bottom: 12px; }
+    .big-value { font-size: 28px; font-weight: 800; color: #1a1a1a; }
+    .big-unit  { font-size: 16px; font-weight: 600; color: #6b7280; margin-left: 2px; }
+    .chg       { font-size: 13px; margin-top: 6px; font-weight: 600; }
+    .chg.down  { color: #5E6AD2; }
+    .chg.up    { color: #059669; }
+    .chg.warn  { color: #DC2626; }
+    .section { background: #fff; border-radius: 12px; padding: 32px; margin-bottom: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); scroll-margin-top: 60px; }
+    .section h2 { font-size: 18px; font-weight: 700; margin-bottom: 24px; color: #1a1a1a; padding-bottom: 14px; border-bottom: 1px solid #f3f4f6; }
+    .section h3 { font-size: 13px; font-weight: 700; color: #6b7280; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 10px; }
+    .section-note { font-size: 12px; color: #9ca3af; margin-top: 10px; }
+    .chart-wrap { position: relative; }
+    .chart-wrap.h260 { height: 260px; }
+    .chart-wrap.h220 { height: 220px; }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th { background: #f9fafb; padding: 10px 14px; text-align: left; font-weight: 700; color: #6b7280; font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; }
+    td { padding: 11px 14px; border-bottom: 1px solid #f3f4f6; color: #374151; }
+    tr:last-child td { border-bottom: none; }
+    .hl td { background: #fff8f8; font-weight: 600; }
+    .app-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 7px; vertical-align: middle; }
+    .dot-t { background: #DC2626; }
+    .dot-s { background: #5E6AD2; }
+    .dot-g { background: #A8A29E; }
+    .insight-box { background: #fafafa; border-left: 4px solid #DC2626; padding: 18px 20px; border-radius: 0 8px 8px 0; }
+    .insight-item { display: flex; gap: 12px; margin-bottom: 14px; }
+    .insight-item:last-child { margin-bottom: 0; }
+    .insight-num { flex-shrink: 0; width: 24px; height: 24px; background: #DC2626; color: #fff; border-radius: 50%; font-size: 12px; font-weight: 800; display: flex; align-items: center; justify-content: center; margin-top: 1px; }
+    .insight-text { font-size: 14px; color: #374151; line-height: 1.75; }
+    .insight-text strong { color: #1a1a1a; }
+    .divider { border: none; border-top: 1px solid #f3f4f6; margin: 24px 0; }
+    .notice-box { background: #fffbeb; border: 1px solid #fde68a; border-radius: 8px; padding: 11px 15px; font-size: 13px; color: #92400e; margin-bottom: 18px; }
+    html { scroll-padding-top: 60px; }
+    .nav-tab { display: inline-block; padding: 10px 16px; font-size: 12px; font-weight: 600; color: #6b7280; text-decoration: none; white-space: nowrap; border-bottom: 2px solid transparent; transition: color .15s, border-color .15s; }
+    .nav-tab:hover { color: #111; }
+    .nav-tab.active { color: #1a1a1a; border-bottom-color: #1a1a1a; }
+    .footer { text-align: center; margin-top: 48px; padding-top: 24px; border-top: 1px solid #e5e7eb; }
+    .footer p { font-size: 12px; color: #9ca3af; margin-bottom: 4px; }
+    @media (max-width: 680px) { .summary-grid { grid-template-columns: 1fr; } }
+    @media print {
+      #stickyNav, button { display: none !important; }
+      body { background: #fff !important; }
+      .section { box-shadow: none !important; border: 1px solid #e5e7eb !important; }
+      @page { margin: 15mm; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- 헤더 -->
+  <div class="header">
+    <h1>카셰어링 경쟁앱 주간 보고서</h1>
+    <p class="subtitle">
+      <span class="app-dot dot-t" style="width:8px;height:8px;"></span> 투루카
+      <span style="margin:0 6px;color:#d1d5db;">|</span>
+      <span class="app-dot dot-s" style="width:8px;height:8px;"></span> 쏘카
+      <span style="margin:0 6px;color:#d1d5db;">|</span>
+      <span class="app-dot dot-g" style="width:8px;height:8px;"></span> Gcar
+    </p>
+    <span class="period">2026년 10월 1주차 기준 (10.5 ~ 10.11)</span>
+  </div>
+
+  <!-- Sticky 탭 -->
+  <nav id="stickyNav" style="position:sticky;top:0;z-index:200;background:#fff;border-bottom:2px solid #f3f4f6;padding:0 24px;box-shadow:0 2px 6px rgba(0,0,0,.06);">
+    <div style="display:flex;max-width:900px;margin:0 auto;overflow-x:auto;">
+      <a href="#sec-insight" class="nav-tab">💡 인사이트</a>
+      <a href="#sec-mau"     class="nav-tab">📊 WAU</a>
+      <a href="#sec-install" class="nav-tab">📥 신규설치</a>
+      <a href="#sec-overlap" class="nav-tab">🔀 교차</a>
+      <a href="#sec-depth"   class="nav-tab">⏱️ 사용깊이</a>
+      <a href="#sec-age"     class="nav-tab">👥 연령</a>
+    </div>
+  </nav>
+
+  <!-- 핵심 인사이트 -->
+  <div class="section" id="sec-insight">
+    <h2>💡 이번 주 핵심 인사이트</h2>
+    <div class="insight-box">
+      <div class="insight-item">
+        <div class="insight-num">1</div>
+        <div class="insight-text">
+          <strong>3사 모두 WAU 감소 (투루카 40,886명 -3.6%, 쏘카 340,179명 -3.1%, Gcar 107,167명 -1.0%). YoY는 쏘카·Gcar 성장, 투루카 역성장 (투루카 -10.7%, 쏘카 +12.1%, Gcar +12.1%).</strong><br>투루카는 40,886명(-3.6%, -1,546명)으로 감소했고 전년 동기(45,808명) 대비 -10.7%(-4,922명)입니다. 쏘카는 340,179명(-3.1%, -10,860명)으로 감소했고 전년 동기(303,498명) 대비 +12.1%(+36,681명)입니다. Gcar는 107,167명(-1.0%, -1,056명)으로 감소했고 전년 동기(95,609명) 대비 +12.1%(+11,558명)입니다.
+        </div>
+      </div>
+      <div class="insight-item">
+        <div class="insight-num">2</div>
+        <div class="insight-text">
+          <strong>3사 모두 신규설치 감소 (투루카 5,798건 -3.8%, 쏘카 26,145건 -6.4%, Gcar 14,904건 -9.7%). YoY는 Gcar 성장, 투루카·쏘카 역성장 (투루카 -22.6%, 쏘카 -3.0%, Gcar +36.9%).</strong><br>투루카는 5,798건(-3.8%, -232건)으로 감소했고 전년 동기(7,492건) 대비 -22.6%(-1,694건)입니다. 쏘카는 26,145건(-6.4%, -1,774건)으로 감소했고 전년 동기(26,945건) 대비 -3.0%(-800건)입니다. Gcar는 14,904건(-9.7%, -1,602건)으로 감소했고 전년 동기(10,887건) 대비 +36.9%(+4,017건)입니다.
+        </div>
+      </div>
+      <div class="insight-item">
+        <div class="insight-num">3</div>
+        <div class="insight-text">
+          <strong>이번 주(10/5) 교차율은 5개 방향 확인(쏘카→투루카는 역산). 투루카→쏘카 39.23%(+0.33%p), 투루카→Gcar 31.33%(+2.19%p), Gcar→투루카 11.95%(+0.53%p), Gcar→쏘카 41.80%(-0.86%p), 쏘카→Gcar 13.17%(+0.02%p). 쏘카→투루카 4.72%(+0.02%p)는 100위 밖이라 투루카 기준 동시 사용자 수 ÷ 쏘카 사용자 수로 역산한 값.</strong><br>usage_overlap_rank API를 투루카·쏘카·Gcar 각각 기준앱으로 rank 1~100까지 조회한 결과, 투루카 사용자의 쏘카 교차율은 39.23%, Gcar 교차율은 31.33%였고 Gcar 사용자의 투루카 교차율은 11.95%, 쏘카 교차율은 41.80%였습니다. 쏘카 사용자의 Gcar 교차율은 13.17%로 확인되었습니다. 쏘카 사용자 중 투루카 교차 방향은 상위 100위 안에서 확인되지 않아, 투루카 기준 목록의 쏘카 동시 사용자 수(16,041명)를 쏘카 사용자 수(340,179명)로 나눈 역산값 4.72%를 사용했습니다. 같은 방식으로 쏘카→Gcar를 계산한 값이 실측과 일치함을 확인했습니다. 2025년 동기 교차율은 전년 같은 주를 같은 방식으로 조회해 채웠습니다(쏘카 기준 값은 역산).
+        </div>
+      </div>
+      <div class="insight-item">
+        <div class="insight-num">4</div>
+        <div class="insight-text">
+          <strong>Gcar 사용 밀도 +3.8%p로 3사 중 1위, 투루카 +0.1%p로 2위, 쏘카 -4.1%p로 3위. 투루카는 20대 시간 비중이 +4.9%p로 가장 크게 확대.</strong><br>Gcar는 MAU 점유율(22.0%) 대비 사용시간 점유율(25.8%)이 +3.8%p 차이로 사용 밀도 1위였고, 투루카는 사용시간 8.5%, MAU 8.4%로 +0.1%p(2위), 쏘카는 사용시간 65.6%, MAU 69.7%로 -4.1%p(3위)였습니다. 연령별로는 투루카는 20대 비중이 46.0%(+4.9%p)로 확대, 10대 비중이 8.6%(-2.6%p)로 축소되었습니다. 쏘카는 20대 비중이 44.4%(+2.1%p)로 확대, 40대 비중이 19.5%(-1.8%p)로 축소되었으며, Gcar는 20대 비중이 50.7%(+5.5%p)로 확대, 30대 비중이 19.8%(-2.2%p)로 축소되었습니다.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WAU -->
+  <div class="section" id="sec-mau">
+    <h2>📊 주간 WAU</h2>
+    <div class="summary-grid" style="margin-bottom:28px;">
+      <div class="summary-card turuka">
+        <div class="app-label">우리 앱</div>
+        <div class="app-name">투루카 <span class="our-badge">OUR APP</span></div>
+        <div class="big-value" style="font-size:22px;">40,886<span class="big-unit">명</span></div>
+        <div class="chg warn">전주 대비 ▼ -3.6% <span style="font-size:11px;opacity:.75;">(▼1,546명)</span></div>
+        <div class="chg warn" style="font-size:12px;margin-top:3px;">전년 대비 ▼ -10.7% <span style="font-size:10px;opacity:.75;">(▼4,922명)</span></div>
+      </div>
+      <div class="summary-card socar">
+        <div class="app-label">1위 경쟁사</div>
+        <div class="app-name">쏘카</div>
+        <div class="big-value" style="font-size:22px;">340,179<span class="big-unit">명</span></div>
+        <div class="chg warn">전주 대비 ▼ -3.1% <span style="font-size:11px;opacity:.75;">(▼10,860명)</span></div>
+        <div class="chg up" style="font-size:12px;margin-top:3px;">전년 대비 ▲ +12.1% <span style="font-size:10px;opacity:.75;">(▲36,681명)</span></div>
+      </div>
+      <div class="summary-card gcar">
+        <div class="app-label">2위 경쟁사</div>
+        <div class="app-name">Gcar</div>
+        <div class="big-value" style="font-size:22px;">107,167<span class="big-unit">명</span></div>
+        <div class="chg warn">전주 대비 ▼ -1.0% <span style="font-size:11px;opacity:.75;">(▼1,056명)</span></div>
+        <div class="chg up" style="font-size:12px;margin-top:3px;">전년 대비 ▲ +12.1% <span style="font-size:10px;opacity:.75;">(▲11,558명)</span></div>
+      </div>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+      <h3 style="margin:0;">최근 12주 추이</h3>
+      <button id="btnYoYMau" onclick="toggleYoY('mauChart',this)" style="background:#1a1a1a;border:1px solid #1a1a1a;border-radius:6px;padding:3px 10px;font-size:11px;color:#fff;cursor:pointer;">YoY 숨기기</button>
+    </div>
+    <p style="font-size:12px;color:#9ca3af;margin-bottom:16px;">실선 = 2026년 · 점선 = 전년 동기(2025년)</p>
+    <div class="chart-wrap h260"><canvas id="mauChart"></canvas></div>
+  </div>
+
+  <!-- 신규설치 -->
+  <div class="section" id="sec-install">
+    <h2>📥 신규설치</h2>
+    <div class="summary-grid" style="margin-bottom:28px;">
+      <div class="summary-card turuka">
+        <div class="app-label">우리 앱</div>
+        <div class="app-name">투루카 <span class="our-badge">OUR APP</span></div>
+        <div class="big-value">5,798<span class="big-unit">건</span></div>
+        <div class="chg warn">전주 대비 ▼ -3.8% <span style="font-size:11px;opacity:.75;">(▼232건)</span></div>
+        <div class="chg warn" style="font-size:12px;margin-top:3px;">전년 대비 ▼ -22.6% <span style="font-size:10px;opacity:.75;">(▼1,694건)</span></div>
+      </div>
+      <div class="summary-card socar">
+        <div class="app-label">1위 경쟁사</div>
+        <div class="app-name">쏘카</div>
+        <div class="big-value">26,145<span class="big-unit">건</span></div>
+        <div class="chg warn">전주 대비 ▼ -6.4% <span style="font-size:11px;opacity:.75;">(▼1,774건)</span></div>
+        <div class="chg warn" style="font-size:12px;margin-top:3px;">전년 대비 ▼ -3.0% <span style="font-size:10px;opacity:.75;">(▼800건)</span></div>
+      </div>
+      <div class="summary-card gcar">
+        <div class="app-label">2위 경쟁사</div>
+        <div class="app-name">Gcar</div>
+        <div class="big-value">14,904<span class="big-unit">건</span></div>
+        <div class="chg warn">전주 대비 ▼ -9.7% <span style="font-size:11px;opacity:.75;">(▼1,602건)</span></div>
+        <div class="chg up" style="font-size:12px;margin-top:3px;">전년 대비 ▲ +36.9% <span style="font-size:10px;opacity:.75;">(▲4,017건)</span></div>
+      </div>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+      <h3 style="margin:0;">최근 12주 추이</h3>
+      <button id="btnYoYInst" onclick="toggleYoY('installChart',this)" style="background:#1a1a1a;border:1px solid #1a1a1a;border-radius:6px;padding:3px 10px;font-size:11px;color:#fff;cursor:pointer;">YoY 숨기기</button>
+    </div>
+    <p style="font-size:12px;color:#9ca3af;margin-bottom:16px;">실선 = 2026년 · 점선 = 전년 동기(2025년)</p>
+    <div class="chart-wrap h220"><canvas id="installChart"></canvas></div>
+  </div>
+
+  <!-- 교차사용 -->
+  <div class="section" id="sec-overlap">
+    <h2>🔀 카셰어링 앱 교차 사용 분석</h2>
+    <p style="font-size:13px;color:#6b7280;margin-bottom:16px;">카셰어링 3개 앱 간 양방향 교차 사용률 (10월 1주, AOS+iOS 합산)</p>
+    <div style="background:#f0fdf4;border:1px solid #86efac;border-radius:8px;padding:11px 15px;font-size:13px;color:#166534;margin-bottom:18px;">✅ 10월 1주(10/5) 데이터: usage_overlap_rank API를 투루카·쏘카·Gcar 각 기준앱으로 rank 1~100까지 조회한 결과, 5개 방향(투루카→쏘카·Gcar, Gcar→투루카·쏘카, 쏘카→Gcar)에서 실측치가 확인되었습니다. 쏘카→투루카 1개 방향은 100위 밖이라 투루카 기준 동시 사용자 수 ÷ 쏘카 사용자 수로 역산했습니다(검증: 같은 방식의 쏘카→Gcar 역산값이 실측과 일치).</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px;">
+      <div id="cardOvT" onclick="toggleOverlapApp('T')" style="background:#fff8f8;border-radius:8px;padding:14px;border-left:3px solid #DC2626;cursor:pointer;box-shadow:0 0 0 2px #DC2626;">
+        <div style="font-size:11px;font-weight:700;color:#DC2626;margin-bottom:8px;">투루카 사용자 중 (10/5 실측)</div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="font-size:12px;">쏘카도 사용</span><span style="font-size:16px;font-weight:700;color:#5E6AD2;">39.23%</span></div>
+        <div style="background:#e0e1f5;border-radius:4px;height:6px;margin-bottom:10px;"><div style="background:#5E6AD2;width:39.23%;height:100%;border-radius:4px;"></div></div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="font-size:12px;">Gcar도 사용</span><span style="font-size:16px;font-weight:700;color:#A8A29E;">31.33%</span></div>
+        <div style="background:#e7e5e4;border-radius:4px;height:6px;"><div style="background:#A8A29E;width:31.33%;height:100%;border-radius:4px;"></div></div>
+      </div>
+      <div id="cardOvS" onclick="toggleOverlapApp('S')" style="background:#eff0fb;border-radius:8px;padding:14px;border-left:3px solid #5E6AD2;cursor:pointer;">
+        <div style="font-size:11px;font-weight:700;color:#5E6AD2;margin-bottom:8px;">쏘카 사용자 중 (T:역산 · G:10/5 실측)</div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="font-size:12px;">투루카도 사용</span><span style="font-size:16px;font-weight:700;color:#DC2626;">4.72%</span></div>
+        <div style="background:#fde8e8;border-radius:4px;height:6px;margin-bottom:10px;"><div style="background:#DC2626;width:4.72%;height:100%;border-radius:4px;"></div></div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="font-size:12px;">Gcar도 사용</span><span style="font-size:16px;font-weight:700;color:#A8A29E;">13.17%</span></div>
+        <div style="background:#e7e5e4;border-radius:4px;height:6px;"><div style="background:#A8A29E;width:13.17%;height:100%;border-radius:4px;"></div></div>
+      </div>
+      <div id="cardOvG" onclick="toggleOverlapApp('G')" style="background:#f5f5f4;border-radius:8px;padding:14px;border-left:3px solid #A8A29E;cursor:pointer;">
+        <div style="font-size:11px;font-weight:700;color:#78716c;margin-bottom:8px;">Gcar 사용자 중 (10/5 실측)</div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="font-size:12px;">투루카도 사용</span><span style="font-size:16px;font-weight:700;color:#DC2626;">11.95%</span></div>
+        <div style="background:#fde8e8;border-radius:4px;height:6px;margin-bottom:10px;"><div style="background:#DC2626;width:11.95%;height:100%;border-radius:4px;"></div></div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="font-size:12px;">쏘카도 사용</span><span style="font-size:16px;font-weight:700;color:#5E6AD2;">41.80%</span></div>
+        <div style="background:#e0e1f5;border-radius:4px;height:6px;"><div style="background:#5E6AD2;width:41.80%;height:100%;border-radius:4px;"></div></div>
+      </div>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:8px;">
+      <div style="font-size:14px;font-weight:700;color:#374151;" id="overlapChartTitle">📈 투루카 사용자 중 교차율 추이 (12주)</div>
+      <div style="display:flex;border:1px solid #e5e7eb;border-radius:6px;overflow:hidden;">
+        <button id="btnOvT" onclick="toggleOverlapApp('T')" style="padding:5px 14px;font-size:12px;font-weight:700;border:none;background:#DC2626;color:#fff;cursor:pointer;">투루카</button>
+        <button id="btnOvS" onclick="toggleOverlapApp('S')" style="padding:5px 14px;font-size:12px;font-weight:700;border:none;background:#fff;color:#6b7280;cursor:pointer;">쏘카</button>
+        <button id="btnOvG" onclick="toggleOverlapApp('G')" style="padding:5px 14px;font-size:12px;font-weight:700;border:none;background:#fff;color:#6b7280;cursor:pointer;">Gcar</button>
+      </div>
+    </div>
+    <p style="font-size:12px;color:#6b7280;margin-bottom:12px;">실선 = 2026년(실측, 쏘카→투루카는 100위 밖이라 역산값) · 점선 = 2025년 동기 교차율(전년 같은 주 실측, 쏘카 기준 2개 방향은 역산값)</p>
+    <div class="chart-wrap h260"><canvas id="overlapTrend12wChart"></canvas></div>
+    <p class="section-note" style="margin-top:10px;">※ 카드 또는 버튼 클릭으로 기준 앱 전환. 교차율은 AOS+iOS 합산 기준. 쏘카→투루카 방향은 100위 밖이라 역산값(투루카 기준 동시 사용자 수 ÷ 쏘카 사용자 수)으로 표기했습니다. 2025년 동기 값은 전년 같은 주를 같은 방식으로 조회한 값이며 쏘카 기준 2개 방향은 역산값입니다.</p>
+  </div>
+
+  <!-- 사용 깊이 -->
+  <div class="section" id="sec-depth">
+    <h2>⏱️ 앱 사용 깊이</h2>
+    <p style="font-size:13px;color:#6b7280;margin-bottom:20px;">MAU 점유율 대비 실제 사용시간 비중 — 규모 대비 충성도 밀도</p>
+    <div class="summary-grid" style="margin-bottom:28px;">
+      <div class="summary-card turuka">
+        <div class="app-label">우리 앱</div>
+        <div class="app-name">투루카 <span class="our-badge">OUR APP</span></div>
+        <div class="big-value" style="font-size:22px;">8.5%</div>
+        <div style="font-size:11px;font-weight:700;color:#9ca3af;text-transform:uppercase;margin-top:2px;">사용시간 점유율</div>
+        <div class="chg" style="color:#6b7280;margin-top:8px;font-size:12px;">MAU 점유율 8.4%</div>
+        <div class="chg up" style="font-size:12px;margin-top:2px;">+0.1%p ↑ 사용 밀도 2위</div>
+      </div>
+      <div class="summary-card socar">
+        <div class="app-label">1위 경쟁사</div>
+        <div class="app-name">쏘카</div>
+        <div class="big-value" style="font-size:22px;">65.6%</div>
+        <div style="font-size:11px;font-weight:700;color:#9ca3af;text-transform:uppercase;margin-top:2px;">사용시간 점유율</div>
+        <div class="chg" style="color:#6b7280;margin-top:8px;font-size:12px;">MAU 점유율 69.7%</div>
+        <div class="chg warn" style="font-size:12px;margin-top:2px;">-4.1%p ↓ 라이트유저 多</div>
+      </div>
+      <div class="summary-card gcar">
+        <div class="app-label">2위 경쟁사</div>
+        <div class="app-name">Gcar</div>
+        <div class="big-value" style="font-size:22px;">25.8%</div>
+        <div style="font-size:11px;font-weight:700;color:#9ca3af;text-transform:uppercase;margin-top:2px;">사용시간 점유율</div>
+        <div class="chg" style="color:#6b7280;margin-top:8px;font-size:12px;">MAU 점유율 22.0%</div>
+        <div class="chg up" style="font-size:12px;margin-top:2px;">+3.8%p ↑ 사용 밀도 1위</div>
+      </div>
+    </div>
+    <hr class="divider">
+    <h3 style="margin-bottom:12px;">총 사용시간 (분)</h3>
+    <table>
+      <thead><tr><th>앱명</th><th>9월 2주차</th><th>9월 3주차</th><th>9월 4주차</th><th>10월 1주차</th><th>전주 대비</th></tr></thead>
+      <tbody>
+        <tr class="hl">
+          <td><span class="app-dot dot-t"></span>투루카</td>
+          <td>6,860분<br><span style="font-size:11px;color:#DC2626;font-weight:600;">10.1분/세션</span></td>
+          <td>8,214분<br><span style="font-size:11px;color:#DC2626;font-weight:600;">10.9분/세션</span></td>
+          <td>6,804분<br><span style="font-size:11px;color:#DC2626;font-weight:600;">9.6분/세션</span></td>
+          <td>6,711분<br><span style="font-size:11px;color:#DC2626;font-weight:600;">9.9분/세션</span></td>
+          <td><span style="color:#5E6AD2;font-weight:700;">▼ -1.4%</span></td>
+        </tr>
+        <tr>
+          <td><span class="app-dot dot-s"></span>쏘카</td>
+          <td>53,787분<br><span style="font-size:11px;color:#5E6AD2;font-weight:600;">8.9분/세션</span></td>
+          <td>58,732분<br><span style="font-size:11px;color:#5E6AD2;font-weight:600;">9.1분/세션</span></td>
+          <td>53,809분<br><span style="font-size:11px;color:#5E6AD2;font-weight:600;">9.2분/세션</span></td>
+          <td>51,624분<br><span style="font-size:11px;color:#5E6AD2;font-weight:600;">9.1분/세션</span></td>
+          <td><span style="color:#5E6AD2;font-weight:700;">▼ -4.1%</span></td>
+        </tr>
+        <tr>
+          <td><span class="app-dot dot-g"></span>Gcar</td>
+          <td>20,976분<br><span style="font-size:11px;color:#A8A29E;font-weight:600;">11.6분/세션</span></td>
+          <td>23,177분<br><span style="font-size:11px;color:#A8A29E;font-weight:600;">12.4분/세션</span></td>
+          <td>21,650분<br><span style="font-size:11px;color:#A8A29E;font-weight:600;">12.0분/세션</span></td>
+          <td>20,318분<br><span style="font-size:11px;color:#A8A29E;font-weight:600;">11.4분/세션</span></td>
+          <td><span style="color:#5E6AD2;font-weight:700;">▼ -6.2%</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="section-note">※ 1인당 세션 시간 = app_health_check time_trend.valueAdd 기준 (10월 1주). 총 사용시간(분)은 time_trend.value(시간 단위 필드)를 이전 보고서와 동일한 방식으로 표기한 값으로, 절대치는 API 단위 표기(hour)와 다를 수 있어 추세 비교 목적으로만 활용을 권장합니다.</p>
+  </div>
+
+  <!-- 연령별 -->
+  <div class="section" id="sec-age">
+    <h2>📊 주간 연령별 사용시간 구성</h2>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:10px;">
+      <p style="font-size:13px;color:#6b7280;margin:0;">10월 1주 기준, 성별 합산 연령대별 사용시간 비중 (AOS+iOS)</p>
+      <div style="display:flex;border:1px solid #e5e7eb;border-radius:6px;overflow:hidden;">
+        <button id="btnAgeThis" onclick="toggleAgeView('this')" style="padding:6px 14px;font-size:12px;font-weight:600;border:none;background:#1a1a1a;color:#fff;cursor:pointer;">이번 주</button>
+        <button id="btnAgeWoW"  onclick="toggleAgeView('wow')"  style="padding:6px 14px;font-size:12px;font-weight:600;border:none;background:#fff;color:#6b7280;cursor:pointer;">전주 대비</button>
+      </div>
+    </div>
+    <div style="background:#f0fdf4;border:1px solid #86efac;border-radius:8px;padding:11px 15px;font-size:13px;color:#166534;margin-bottom:18px;">✅ app_demographic API(uType=time) 실측값 — 사용시간 기준 연령별 비중</div>
+    <div class="chart-wrap h260"><canvas id="ageTimeChart"></canvas></div>
+    <div id="ageFeaturesThis" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:20px;">
+      <div style="background:#fff8f8;border-radius:8px;padding:14px;border-left:3px solid #DC2626;">
+        <div style="font-size:12px;font-weight:700;color:#DC2626;margin-bottom:6px;">투루카 특징</div>
+        <div style="font-size:13px;color:#374151;line-height:1.6;">20대 <strong>46.0%</strong> · 30~40대 <strong>33.6%</strong><br><span style="font-size:11px;color:#9ca3af;">남성 77.7% · 여성 22.3%</span></div>
+        <div style="font-size:11.5px;color:#6b7280;margin-top:6px;">20대 비중 확대(+4.9%p) · 10대 비중 축소(-2.6%p)</div>
+      </div>
+      <div style="background:#eff0fb;border-radius:8px;padding:14px;border-left:3px solid #5E6AD2;">
+        <div style="font-size:12px;font-weight:700;color:#5E6AD2;margin-bottom:6px;">쏘카 특징</div>
+        <div style="font-size:13px;color:#374151;line-height:1.6;">20대 <strong>44.4%</strong> · 30대 <strong>23.0%</strong><br><span style="font-size:11px;color:#9ca3af;">남성 64.5% · 여성 35.5%</span></div>
+        <div style="font-size:11.5px;color:#6b7280;margin-top:6px;">20대 비중 확대(+2.1%p) · 40대 비중 축소(-1.8%p)</div>
+      </div>
+      <div style="background:#f5f5f4;border-radius:8px;padding:14px;border-left:3px solid #A8A29E;">
+        <div style="font-size:12px;font-weight:700;color:#78716c;margin-bottom:6px;">Gcar 특징</div>
+        <div style="font-size:13px;color:#374151;line-height:1.6;">20대 <strong>50.7%</strong> · 30대 <strong>19.8%</strong><br><span style="font-size:11px;color:#9ca3af;">남성 68.4% · 여성 31.6%</span></div>
+        <div style="font-size:11.5px;color:#6b7280;margin-top:6px;">20대 비중 확대(+5.5%p) · 30대 비중 축소(-2.2%p)</div>
+      </div>
+    </div>
+    <div id="ageFeaturesWow" style="display:none;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:20px;">
+      <div style="background:#fff8f8;border-radius:8px;padding:14px;border-left:3px solid #DC2626;"><div style="font-size:12px;font-weight:700;color:#DC2626;margin-bottom:6px;">투루카 — 전주 대비</div><div style="font-size:13px;color:#374151;line-height:1.7;">20대 <strong style="color:#059669;">+4.9%p ↑</strong> · 10대 <strong style="color:#DC2626;">-2.6%p ↓</strong><br><span style="font-size:11px;color:#9ca3af;">30대-1.2 / 40대-1.6 / 50대-0.8 / 60대+1.2</span></div></div>
+      <div style="background:#eff0fb;border-radius:8px;padding:14px;border-left:3px solid #5E6AD2;"><div style="font-size:12px;font-weight:700;color:#5E6AD2;margin-bottom:6px;">쏘카 — 전주 대비</div><div style="font-size:13px;color:#374151;line-height:1.7;">20대 <strong style="color:#059669;">+2.1%p ↑</strong> · 40대 <strong style="color:#DC2626;">-1.8%p ↓</strong><br><span style="font-size:11px;color:#9ca3af;">10대-0.5 / 30대-1.1 / 50대+1.1 / 60대+0.1</span></div></div>
+      <div style="background:#f5f5f4;border-radius:8px;padding:14px;border-left:3px solid #A8A29E;"><div style="font-size:12px;font-weight:700;color:#78716c;margin-bottom:6px;">Gcar — 전주 대비</div><div style="font-size:13px;color:#374151;line-height:1.7;">20대 <strong style="color:#059669;">+5.5%p ↑</strong> · 30대 <strong style="color:#DC2626;">-2.2%p ↓</strong><br><span style="font-size:11px;color:#9ca3af;">10대-0.9 / 40대-1.2 / 50대-1.9 / 60대+0.7</span></div></div>
+    </div>
+    <p class="section-note" style="margin-top:12px;">※ 각 앱 전체 사용시간을 100%로 환산한 연령대별 비중 (남+여 합산)</p>
+  </div>
+
+  <!-- 푸터 -->
+  <div class="footer">
+    <p>보고서 생성일: 2026년 10월 15일 (자동 생성: 10/5~10/11주 데이터 반영)</p>
+    <p>본 리포트는 아이지에이웍스의 고유 알고리즘을 통해 산출된 추정치입니다.</p>
+  </div>
+
+</div>
+
+<script>
+const C_T='#DC2626',C_S='#5E6AD2',C_G='#A8A29E';
+const LINE={tension:.35,pointRadius:5,pointHoverRadius:7,fill:false,borderWidth:2.5};
+const DASH={tension:.35,pointRadius:3,pointHoverRadius:6,fill:false,borderWidth:1.8,borderDash:[5,4]};
+const WLABELS=['7/20주','7/27주','8/3주','8/10주','8/17주','8/24주','8/31주','9/7주','9/14주','9/21주','9/28주','10/5주'];
+
+/* ── MAU ── */
+new Chart('mauChart',{type:'line',data:{labels:WLABELS,datasets:[
+  {label:'투루카(2026)',data:[41518,44454,40894,41079,40203,41969,40995,43586,40688,45305,42432,40886],borderColor:C_T,pointBackgroundColor:C_T,...LINE},
+  {label:'쏘카(2026)',  data:[350573,377074,370374,357079,348086,354081,339968,366217,363736,386525,351039,340179],borderColor:C_S,pointBackgroundColor:C_S,...LINE},
+  {label:'Gcar(2026)', data:[106066,109390,114695,113615,104884,105154,105934,108723,108713,112152,108223,107167],borderColor:C_G,pointBackgroundColor:C_G,...LINE},
+  {label:'투루카(2025)',data:[45610,46478,45496,44618,43348,43026,42606,39660,42127,41486,44872,45808],borderColor:C_T,pointBackgroundColor:C_T,...DASH,hidden:false},
+  {label:'쏘카(2025)',  data:[304554,292482,290945,299876,311859,298897,285509,285755,285262,275967,324046,303498],borderColor:C_S,pointBackgroundColor:C_S,...DASH,hidden:false},
+  {label:'Gcar(2025)', data:[101274,100733,92646,96433,89298,89283,86212,86672,87112,89088,99280,95609],borderColor:C_G,pointBackgroundColor:C_G,...DASH,hidden:false}
+]},options:{responsive:true,maintainAspectRatio:false,plugins:{
+  legend:{position:'top',labels:{boxWidth:28,boxHeight:2,padding:12,generateLabels:chart=>chart.data.datasets.map((ds,i)=>({text:ds.label,fillStyle:ds.borderColor,strokeStyle:ds.borderColor,lineWidth:ds.borderWidth,lineDash:ds.borderDash||[],hidden:!chart.isDatasetVisible(i),datasetIndex:i}))}},
+  tooltip:{callbacks:{label:c=>`${c.dataset.label}: ${c.parsed.y.toLocaleString()}명`}}
+},scales:{y:{ticks:{callback:v=>v>=10000?(v/10000).toFixed(1)+'만':v},grid:{color:'#f3f4f6'}},x:{grid:{display:false}}}}});
+
+/* ── 신규설치 ── */
+new Chart('installChart',{type:'line',data:{labels:WLABELS,datasets:[
+  {label:'쏘카(2026)',  data:[26150,24441,27491,28301,24985,25775,26422,26782,25185,26255,27919,26145],borderColor:C_S,pointBackgroundColor:C_S,...LINE},
+  {label:'Gcar(2026)', data:[13874,12725,18779,15764,14343,15439,13799,15507,14088,14893,16506,14904],   borderColor:C_G,pointBackgroundColor:C_G,...LINE},
+  {label:'투루카(2026)',data:[7633,6717,7505,6869,5524,6738,6059,6612,6305,7579,6030,5798],          borderColor:C_T,pointBackgroundColor:C_T,...LINE},
+  {label:'쏘카(2025)',  data:[33824,34153,30405,30486,32144,30134,30681,30019,28894,25669,31868,26945],borderColor:C_S,pointBackgroundColor:C_S,...DASH,hidden:false},
+  {label:'Gcar(2025)', data:[13937,14993,13019,12740,11195,10918,9844,9816,10624,10652,13621,10887],          borderColor:C_G,pointBackgroundColor:C_G,...DASH,hidden:false},
+  {label:'투루카(2025)',data:[9463,9533,8905,7828,8001,7773,7135,6109,6980,6405,8992,7492],            borderColor:C_T,pointBackgroundColor:C_T,...DASH,hidden:false}
+]},options:{responsive:true,maintainAspectRatio:false,plugins:{
+  legend:{position:'top',labels:{boxWidth:28,boxHeight:2,padding:12,generateLabels:chart=>chart.data.datasets.map((ds,i)=>({text:ds.label,fillStyle:ds.borderColor,strokeStyle:ds.borderColor,lineWidth:ds.borderWidth,lineDash:ds.borderDash||[],hidden:!chart.isDatasetVisible(i),datasetIndex:i}))}},
+  tooltip:{callbacks:{label:c=>`${c.dataset.label}: ${c.parsed.y.toLocaleString()}건`}}
+},scales:{y:{ticks:{callback:v=>v.toLocaleString()},grid:{color:'#f3f4f6'}},x:{grid:{display:false}}}}});
+
+/* ── 연령별 ── */
+const ageThis={T:[8.6,46.0,19.2,14.4,10.3,1.5],S:[3.6,44.4,23.0,19.5,8.8,0.7],G:[4.2,50.7,19.8,16.8,7.3,1.2]};
+const ageDelta={T:[-2.6,4.9,-1.2,-1.6,-0.8,1.2],S:[-0.5,2.1,-1.1,-1.8,1.1,0.1],G:[-0.9,5.5,-2.2,-1.2,-1.9,0.7]};
+const ageChart=new Chart('ageTimeChart',{type:'bar',data:{labels:['10대','20대','30대','40대','50대','60대+'],datasets:[
+  {label:'투루카',data:ageThis.T,backgroundColor:'rgba(220,38,38,0.85)',borderRadius:4},
+  {label:'쏘카',  data:ageThis.S,backgroundColor:'rgba(94,106,210,0.85)',borderRadius:4},
+  {label:'Gcar',  data:ageThis.G,backgroundColor:'rgba(168,162,158,0.85)',borderRadius:4}
+]},options:{responsive:true,maintainAspectRatio:false,plugins:{
+  legend:{labels:{boxWidth:12,boxHeight:12,padding:16,font:{size:13}}},
+  tooltip:{callbacks:{label:ctx=>` ${ctx.dataset.label}: ${ctx.parsed.y.toFixed(1)}%`}}
+},scales:{y:{ticks:{callback:v=>v+'%'},grid:{color:'#f3f4f6'},max:55},x:{grid:{display:false}}}}});
+
+function toggleAgeView(mode){
+  const w=mode==='wow';
+  document.getElementById('btnAgeThis').style.cssText=w?'padding:6px 14px;font-size:12px;font-weight:600;border:none;background:#fff;color:#6b7280;cursor:pointer;':'padding:6px 14px;font-size:12px;font-weight:600;border:none;background:#1a1a1a;color:#fff;cursor:pointer;';
+  document.getElementById('btnAgeWoW').style.cssText=w?'padding:6px 14px;font-size:12px;font-weight:600;border:none;background:#1a1a1a;color:#fff;cursor:pointer;':'padding:6px 14px;font-size:12px;font-weight:600;border:none;background:#fff;color:#6b7280;cursor:pointer;';
+  ageChart.data.datasets[0].data=w?ageDelta.T:ageThis.T;
+  ageChart.data.datasets[1].data=w?ageDelta.S:ageThis.S;
+  ageChart.data.datasets[2].data=w?ageDelta.G:ageThis.G;
+  ageChart.options.scales.y.max=w?undefined:55;
+  ageChart.options.scales.y.ticks.callback=w?v=>(v>=0?'+':'')+v+'%p':v=>v+'%';
+  ageChart.update();
+  document.getElementById('ageFeaturesThis').style.display=w?'none':'grid';
+  document.getElementById('ageFeaturesWow').style.display=w?'grid':'none';
+}
+
+/* ── 교차사용 ── */
+const OVL=['7/20','7/27','8/3','8/10','8/17','8/24','8/31','9/7','9/14','9/21','9/28','10/5'];
+const ovData={
+  T:{title:'📈 투루카 기준 교차율 추이 (12주)',yMin:20,yMax:50,ds:[
+    {l:'쏘카 교차율(2026)',d:[38.38,41.78,40.95,40.94,39.11,40.52,41.15,40.76,42.7,41.81,38.9,39.23],c:C_S,fill:true},
+    {l:'Gcar 교차율(2026)',d:[29.45,32.42,28.68,30.85,28.74,29.15,31.56,31.73,31.18,32.02,29.14,31.33],c:C_G,fill:true},
+    {l:'쏘카(2025 YoY)',   d:[38.55,40.16,38.83,39.98,39.87,39.67,38.29,38.29,41.06,39.98,43.22,44.58],c:C_S,yoy:true},
+    {l:'Gcar(2025 YoY)',   d:[29.38,31.20,29.18,29.43,28.07,27.69,26.69,27.55,27.87,28.21,30.61,31.59],c:C_G,yoy:true}]},
+  S:{title:'📈 쏘카 기준 교차율 추이 (12주)',yMin:0,yMax:20,ds:[
+    {l:'투루카 교차율(2026)',d:[3.49,4.93,4.52,4.71,4.52,4.80,4.96,4.85,4.78,4.90,4.70,4.72],c:C_T,fill:true},
+    {l:'Gcar 교차율(2026)',  d:[12.23,12.25,12.34,12.32,11.83,11.91,12.9,12.04,12.27,12.9,13.15,13.17],c:C_G,fill:true},
+    {l:'투루카(2025 YoY)',   d:[5.77,6.38,6.07,5.95,5.54,5.71,5.71,5.31,6.06,6.01,5.98,6.73],c:C_T,yoy:true},
+    {l:'Gcar(2025 YoY)',     d:[14.19,14.78,13.70,14.00,12.40,13.21,13.00,13.00,13.35,14.12,13.87,14.86],c:C_G,yoy:true}]},
+  G:{title:'📈 Gcar 기준 교차율 추이 (12주)',yMin:5,yMax:50,ds:[
+    {l:'투루카 교차율(2026)',d:[11.53,13.18,10.22,11.16,11.02,11.63,12.21,12.72,11.67,12.93,11.42,11.95],c:C_T,fill:true},
+    {l:'쏘카 교차율(2026)',  d:[40.43,42.23,39.86,38.73,39.25,40.11,41.39,40.55,41.05,44.46,42.66,41.8],c:C_S,fill:true},
+    {l:'투루카(2025 YoY)',   d:[13.23,14.40,14.33,13.62,13.63,13.34,13.19,12.61,13.48,13.14,13.84,15.13],c:C_T,yoy:true},
+    {l:'쏘카(2025 YoY)',     d:[42.68,42.90,43.03,43.53,43.29,44.21,43.07,42.86,43.71,43.72,45.27,47.18],c:C_S,yoy:true}]}
+};
+function buildOvDS(k){return ovData[k].ds.map(d=>({label:d.l,data:d.d,borderColor:d.c,backgroundColor:d.yoy?'transparent':(d.fill?d.c+'18':'transparent'),borderWidth:d.yoy?1.8:2.5,borderDash:d.yoy?[5,5]:[],pointRadius:d.yoy?3:4,pointBackgroundColor:d.c,tension:.35,fill:d.fill&&!d.yoy,spanGaps:false}));}
+const ovChart=new Chart('overlapTrend12wChart',{type:'line',data:{labels:OVL,datasets:buildOvDS('T')},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'top',labels:{boxWidth:12,boxHeight:2,padding:12}},tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${c.parsed.y!==null?c.parsed.y.toFixed(1)+'%':'데이터 없음'}`}}},scales:{y:{min:20,max:50,ticks:{callback:v=>v+'%'},grid:{color:'#f3f4f6'}},x:{grid:{display:false}}}}});
+
+function toggleOverlapApp(k){
+  ['T','S','G'].forEach(x=>{
+    const btn=document.getElementById('btnOv'+x);
+    const colors={T:C_T,S:C_S,G:C_G};
+    btn.style.background=x===k?colors[x]:'#fff';
+    btn.style.color=x===k?'#fff':'#6b7280';
+    const card=document.getElementById('cardOv'+x);
+    if(card)card.style.boxShadow=x===k?`0 0 0 2px ${colors[x]}`:'none';
+  });
+  document.getElementById('overlapChartTitle').textContent=ovData[k].title;
+  ovChart.data.datasets=buildOvDS(k);
+  ovChart.options.scales.y.min=ovData[k].yMin;
+  ovChart.options.scales.y.max=ovData[k].yMax;
+  ovChart.update();
+}
+
+/* ── YoY 토글 ── */
+function toggleYoY(id,btn){
+  const chart=Chart.getChart(id);
+  const wasHidden=chart.data.datasets[3].hidden;
+  [3,4,5].forEach(i=>chart.data.datasets[i].hidden=!wasHidden);
+  chart.update();
+  btn.textContent=wasHidden?'YoY 숨기기':'+ YoY 비교';
+  btn.style.background=wasHidden?'#1a1a1a':'#f3f4f6';
+  btn.style.color=wasHidden?'#fff':'#6b7280';
+}
+
+/* ── Sticky 탭 active ── */
+(function(){
+  const tabs=document.querySelectorAll('.nav-tab');
+  const secs=['sec-insight','sec-mau','sec-install','sec-overlap','sec-depth','sec-age'];
+  function setActive(){
+    const nearBottom=window.innerHeight+window.scrollY>=document.body.scrollHeight-60;
+    if(nearBottom){tabs.forEach(t=>t.classList.toggle('active',t.getAttribute('href')==='#'+secs[secs.length-1]));return;}
+    let cur=secs[0];
+    secs.forEach(id=>{const el=document.getElementById(id);if(el&&el.getBoundingClientRect().top<=100)cur=id;});
+    tabs.forEach(t=>t.classList.toggle('active',t.getAttribute('href')==='#'+cur));
+  }
+  window.addEventListener('scroll',setActive);
+  setActive();
+})();
+</script>
+</body>
+</html>
